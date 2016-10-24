@@ -14,6 +14,7 @@ import lt.markmerkk.mock_app.mvp.ProductsPresenterImpl
 import lt.markmerkk.mock_app.mvp.ProductsView
 import lt.markmerkk.mock_app.networking.ProductsService
 import lt.markmerkk.mock_app.networking.entities.Product
+import lt.markmerkk.mock_app.utils.Logger
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -52,7 +53,11 @@ class MainActivity : AppCompatActivity(), ProductsView {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setAdapter(adapter)
-        recyclerView.setDefaultOnRefreshListener { productsPresenter.loadProducts() }
+        recyclerView.setDefaultOnRefreshListener { productsPresenter.reloadProducts() }
+        recyclerView.reenableLoadmore()
+        recyclerView.setOnLoadMoreListener { itemsCount, maxVisiblePosition ->
+            productsPresenter.appendProducts()
+        }
 
         productsPresenter.onAttach()
     }
@@ -75,7 +80,13 @@ class MainActivity : AppCompatActivity(), ProductsView {
     }
 
     override fun showProducts(products: List<Product>) {
-        adapter.products = products
+        adapter.products = products.toMutableList()
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun appendProducts(additionalProducts: List<Product>) {
+        adapter.products.addAll(additionalProducts)
+        adapter.notifyDataSetChanged()
     }
 
     override fun showEmptyState() {

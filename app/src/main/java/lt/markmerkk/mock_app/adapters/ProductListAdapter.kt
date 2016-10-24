@@ -21,11 +21,7 @@ class ProductListAdapter(
 ) : UltimateViewAdapter<ProductListAdapter.ProductViewHolder>() {
 
     val inflater = LayoutInflater.from(context)
-    var products: List<Product> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    var products: MutableList<Product> = mutableListOf()
 
     override fun onCreateHeaderViewHolder(parent: ViewGroup?): RecyclerView.ViewHolder? {
         throw UnsupportedOperationException()

@@ -16,8 +16,7 @@ import rx.schedulers.Schedulers
  * *
  * @since 2016-10-24
  */
-class ProductsPresenterImplTest {
-
+class ProductsPresenterImplPaginationTest {
     val view: ProductsView = mock()
     val api: ProductsService = mock()
     val presenter = ProductsPresenterImpl(
@@ -26,29 +25,11 @@ class ProductsPresenterImplTest {
             Schedulers.immediate(),
             Schedulers.immediate()
     )
-    val testPage = 1
 
     @Test
-    fun load_showHideProgress() {
+    fun reload_reloadPage() {
         // Assemble
-        whenever(api.products(testPage)).thenReturn(
-                Observable.just(listOf(
-                        Product(), Product(), Product()
-                ))
-        )
-
-        // Act
-        presenter.reloadProducts()
-
-        // Assert
-        verify(view).showProgress()
-        verify(view).hideProgress()
-    }
-
-    @Test
-    fun successResponse_showList() {
-        // Assemble
-        whenever(api.products(testPage)).thenReturn(
+        whenever(api.products(any())).thenReturn(
                 Observable.just(listOf(
                         Product(), Product(), Product()
                 ))
@@ -62,30 +43,18 @@ class ProductsPresenterImplTest {
     }
 
     @Test
-    fun emptyList_showEmptyState() {
+    fun append_appendResponse() {
         // Assemble
-        whenever(api.products(testPage)).thenReturn(
-                Observable.just(emptyList())
+        whenever(api.products(any())).thenReturn(
+                Observable.just(listOf(
+                        Product(), Product(), Product()
+                ))
         )
 
         // Act
-        presenter.reloadProducts()
+        presenter.appendProducts()
 
         // Assert
-        verify(view).showEmptyState()
-    }
-
-    @Test
-    fun responseError_showErrorDialog() {
-        // Assemble
-        whenever(api.products(testPage)).thenReturn(
-                Observable.error(RuntimeException())
-        )
-
-        // Act
-        presenter.reloadProducts()
-
-        // Assert
-        verify(view).showError(any())
+        verify(view).appendProducts(any())
     }
 }

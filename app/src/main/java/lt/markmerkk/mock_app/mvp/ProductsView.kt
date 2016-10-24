@@ -10,6 +10,7 @@ interface ProductsView {
     fun showProgress()
     fun hideProgress()
     fun showProducts(products: List<Product>)
+    fun appendProducts(additionalProducts: List<Product>)
     fun showEmptyState()
     fun showError(error: Throwable)
 }

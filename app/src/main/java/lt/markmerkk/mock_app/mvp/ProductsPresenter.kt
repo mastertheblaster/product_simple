@@ -8,5 +8,6 @@ interface ProductsPresenter {
     fun onAttach()
     fun onDetach()
 
-    fun loadProducts()
+    fun reloadProducts()
+    fun appendProducts()
 }
