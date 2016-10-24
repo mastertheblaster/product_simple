@@ -44,6 +44,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "io.reactivex:rxjava:$rxVersion"
     compile "io.reactivex:rxandroid:$rxAndroidVersion"
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
 
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     testCompile "com.nhaarman:mockito-kotlin:$kotlinMockitoTestVersion"
