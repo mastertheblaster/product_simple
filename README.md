@@ -5,3 +5,6 @@
 * rxjava
 * ...and other additional libraries
 
+```bash
+./gradlew installDebug
+```
