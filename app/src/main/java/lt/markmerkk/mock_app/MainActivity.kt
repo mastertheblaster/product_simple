@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ProgressBar
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
 import lt.markmerkk.mock_app.adapters.ProductListAdapter
 import lt.markmerkk.mock_app.dagger.modules.ActivityModule
 import lt.markmerkk.mock_app.mvp.ProductsPresenterImpl
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity(), ProductsView {
     lateinit var productsService: ProductsService
 
     lateinit var adapter: ProductListAdapter
-    lateinit var recyclerView: RecyclerView
+    lateinit var recyclerView: UltimateRecyclerView
     lateinit var progress: ProgressBar
 
     val productsPresenter by lazy {
@@ -46,11 +47,12 @@ class MainActivity : AppCompatActivity(), ProductsView {
 
         progress = findViewById(R.id.progress_bar) as ProgressBar
         adapter = ProductListAdapter(this)
-        recyclerView = findViewById(R.id.list_view) as RecyclerView
+        recyclerView = findViewById(R.id.list_view) as UltimateRecyclerView
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = adapter
+        recyclerView.setAdapter(adapter)
+        recyclerView.setDefaultOnRefreshListener { productsPresenter.loadProducts() }
 
         productsPresenter.onAttach()
     }

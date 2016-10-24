@@ -8,6 +8,8 @@ ext.junitVersion = "4.11"
 ext.kotlinMockitoTestVersion = "0.8.0"
 ext.mockitoCoreVersion = "1.9.5"
 ext.retrofitVersion = "2.1.0"
+ext.glideVersion = "3.7.0"
+ext.ultimateRecycleView = "0.7.0"
 
 buildscript {
     ext.kotlinVersion = '1.0.4'
