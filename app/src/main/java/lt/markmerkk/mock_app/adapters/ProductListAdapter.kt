@@ -29,7 +29,7 @@ class ProductListAdapter(
 
     override fun onBindViewHolder(holder: ProductViewHolder?, position: Int) {
         holder!!.titleView.text = products[position].title
-        holder!!.priceView.text = products[position].price.toString()
+        holder!!.priceView.text = products[position].formattedPrice()
         Glide.with(context)
                 .load(products[position].image)
                 .centerCrop()
