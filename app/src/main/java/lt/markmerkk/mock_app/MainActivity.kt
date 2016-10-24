@@ -2,6 +2,10 @@ package lt.markmerkk.mock_app
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import lt.markmerkk.mock_app.adapters.ProductListAdapter
 import lt.markmerkk.mock_app.dagger.modules.ActivityModule
 import lt.markmerkk.mock_app.mvp.ProductsPresenterImpl
 import lt.markmerkk.mock_app.mvp.ProductsView
@@ -17,6 +21,9 @@ class MainActivity : AppCompatActivity(), ProductsView {
 
     @Inject
     lateinit var productsService: ProductsService
+
+    lateinit var adapter: ProductListAdapter
+    lateinit var recyclerView: RecyclerView
 
     val productsPresenter by lazy {
         ProductsPresenterImpl(
@@ -35,6 +42,13 @@ class MainActivity : AppCompatActivity(), ProductsView {
                 .activityComponent(ActivityModule(this))
                 .inject(this)
         productsPresenter.onAttach()
+
+        adapter = ProductListAdapter(this)
+        recyclerView = findViewById(R.id.list_view) as RecyclerView
+        val linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.adapter = adapter
     }
 
     override fun onDestroy() {
@@ -45,15 +59,18 @@ class MainActivity : AppCompatActivity(), ProductsView {
     //region Products mvp
 
     override fun showProducts(products: List<Product>) {
-        throw UnsupportedOperationException()
+        adapter.products = products
     }
 
     override fun showEmptyState() {
-        throw UnsupportedOperationException()
     }
 
     override fun showError(error: Throwable) {
-        throw UnsupportedOperationException()
+        AlertDialog
+                .Builder(this)
+                .setTitle(getString(R.string.general_error))
+                .setMessage(getString(R.string.error_no_products))
+                .show()
     }
 
     //endregion
