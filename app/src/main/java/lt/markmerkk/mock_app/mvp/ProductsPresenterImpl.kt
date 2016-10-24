@@ -1,7 +1,7 @@
 package lt.markmerkk.mock_app.mvp
 
 import lt.markmerkk.mock_app.networking.ProductsService
-import lt.markmerkk.mock_app.utils.Logger
+import lt.markmerkk.mock_app.networking.entities.Product
 import rx.Scheduler
 
 /**
@@ -19,12 +19,25 @@ class ProductsPresenterImpl(
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .subscribe({
-                    Logger.log("Response: $it")
+                    handleSuccess(it)
                 }, {
-                    Logger.log("Error: $it")
+                    view.showError(it)
                 })
     }
 
     override fun onDetach() {
     }
+
+    //region Convenience
+
+    fun handleSuccess(products: List<Product>) {
+        if (products.size > 0) {
+            view.showProducts(products)
+        } else {
+            view.showEmptyState()
+        }
+    }
+
+    //endregion
+
 }

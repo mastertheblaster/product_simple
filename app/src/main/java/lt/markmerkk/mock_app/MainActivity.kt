@@ -6,6 +6,7 @@ import lt.markmerkk.mock_app.dagger.modules.ActivityModule
 import lt.markmerkk.mock_app.mvp.ProductsPresenterImpl
 import lt.markmerkk.mock_app.mvp.ProductsView
 import lt.markmerkk.mock_app.networking.ProductsService
+import lt.markmerkk.mock_app.networking.entities.Product
 import lt.markmerkk.mock_app.utils.Logger
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity(), ProductsView {
 
     //region Products mvp
 
-    override fun showProducts() {
+    override fun showProducts(products: List<Product>) {
         throw UnsupportedOperationException()
     }
 
