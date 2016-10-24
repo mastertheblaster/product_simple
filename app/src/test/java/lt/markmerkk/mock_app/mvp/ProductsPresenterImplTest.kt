@@ -28,6 +28,23 @@ class ProductsPresenterImplTest {
     )
 
     @Test
+    fun load_showHideProgress() {
+        // Assemble
+        whenever(api.products()).thenReturn(
+                Observable.just(listOf(
+                        Product(), Product(), Product()
+                ))
+        )
+
+        // Act
+        presenter.loadProducts()
+
+        // Assert
+        verify(view).showProgress()
+        verify(view).hideProgress()
+    }
+
+    @Test
     fun successResponse_showList() {
         // Assemble
         whenever(api.products()).thenReturn(
@@ -37,7 +54,7 @@ class ProductsPresenterImplTest {
         )
 
         // Act
-        presenter.onAttach()
+        presenter.loadProducts()
 
         // Assert
         verify(view).showProducts(any())
@@ -51,7 +68,7 @@ class ProductsPresenterImplTest {
         )
 
         // Act
-        presenter.onAttach()
+        presenter.loadProducts()
 
         // Assert
         verify(view).showEmptyState()
@@ -65,7 +82,7 @@ class ProductsPresenterImplTest {
         )
 
         // Act
-        presenter.onAttach()
+        presenter.loadProducts()
 
         // Assert
         verify(view).showError(any())

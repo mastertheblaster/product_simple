@@ -7,4 +7,6 @@ package lt.markmerkk.mock_app.mvp
 interface ProductsPresenter {
     fun onAttach()
     fun onDetach()
+
+    fun loadProducts()
 }

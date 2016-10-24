@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
+import android.widget.ProgressBar
 import lt.markmerkk.mock_app.adapters.ProductListAdapter
 import lt.markmerkk.mock_app.dagger.modules.ActivityModule
 import lt.markmerkk.mock_app.mvp.ProductsPresenterImpl
 import lt.markmerkk.mock_app.mvp.ProductsView
 import lt.markmerkk.mock_app.networking.ProductsService
 import lt.markmerkk.mock_app.networking.entities.Product
-import lt.markmerkk.mock_app.utils.Logger
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity(), ProductsView {
 
     lateinit var adapter: ProductListAdapter
     lateinit var recyclerView: RecyclerView
+    lateinit var progress: ProgressBar
 
     val productsPresenter by lazy {
         ProductsPresenterImpl(
@@ -41,14 +43,16 @@ class MainActivity : AppCompatActivity(), ProductsView {
                 .component
                 .activityComponent(ActivityModule(this))
                 .inject(this)
-        productsPresenter.onAttach()
 
+        progress = findViewById(R.id.progress_bar) as ProgressBar
         adapter = ProductListAdapter(this)
         recyclerView = findViewById(R.id.list_view) as RecyclerView
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = adapter
+
+        productsPresenter.onAttach()
     }
 
     override fun onDestroy() {
@@ -57,6 +61,16 @@ class MainActivity : AppCompatActivity(), ProductsView {
     }
 
     //region Products mvp
+
+    override fun showProgress() {
+        progress.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+    }
+
+    override fun hideProgress() {
+        progress.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+    }
 
     override fun showProducts(products: List<Product>) {
         adapter.products = products
