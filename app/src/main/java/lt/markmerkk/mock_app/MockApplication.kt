@@ -1,8 +1,8 @@
 package lt.markmerkk.mock_app
 
 import android.app.Application
-import android.content.Intent
 import lt.markmerkk.mock_app.dagger.components.ApplicationComponent
+import lt.markmerkk.mock_app.dagger.components.DaggerApplicationComponent
 import lt.markmerkk.mock_app.dagger.modules.ApplicationModule
 
 /**
@@ -15,14 +15,14 @@ class MockApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        assembleComponents()
+        assembleComponents()
     }
 
     fun assembleComponents() {
-//        component = DaggerApplicationComponent
-//                .builder()
-//                .applicationModule(ApplicationModule(this))
-//                .build()
+        component = DaggerApplicationComponent
+                .builder()
+                .applicationModule(ApplicationModule(this))
+                .build()
         component.inject(this)
     }
 
